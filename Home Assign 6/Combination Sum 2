@@ -1,0 +1,26 @@
+import java.util.*;
+
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates); // sort to handle duplicates
+        List<Integer> temp = new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<>();
+        combination(candidates, target, temp, 0, ans);
+        return ans;
+    }
+
+    public void combination(int[] candidates, int target, List<Integer> temp, int idx, List<List<Integer>> ans) {
+        if(target == 0) {
+            ans.add(new ArrayList<>(temp));
+            return;
+        }
+
+        for(int i = idx; i < candidates.length; i++) {
+            if(i > idx && candidates[i] == candidates[i-1]) continue; // skip duplicates
+            if(candidates[i] > target) break; // early stopping
+            temp.add(candidates[i]);
+            combination(candidates, target - candidates[i], temp, i + 1, ans); // i+1 because each element can be used only once
+            temp.remove(temp.size() - 1);
+        }
+    }
+}
